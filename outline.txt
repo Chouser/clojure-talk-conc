@@ -1,0 +1,132 @@
+- Introduce myself
+  - list reasons it may be worth learning clojure
+  - briefly describe concurrency and why it's hard
+  - describe clojure's solution to concurrency
+    - immutability (how does this even work?)
+    - value/identity split
+    - reference types
+2:20
+- Reasons for learning Clojure [Learning a language is hard]
+    - Access to Java libs
+    - Lisp
+      - macros
+      - access to compiler at runtime
+      - gorgeous prefix notation
+    - Persistent collections
+    - Seq library
+    - Functional programming
+    - Concurrency support
+11:45
+- What is concurrency?
+  - loosely coordinated threads in the same process
+  - not parallelism (pmap, fork/join lib)
+  - not distributed (cloud/beuwulf cluster)
+  - multicore
+14:40
+- What's tricky about concurrency?
+  - looks simple, but isn't
+        a=31
+        b=11
+        c=a+b // c=?
+  - race conditions
+  - deadlocks
+  - unenforced policy
+20:00
+- Clojure's solution
+  - As much immutability as possible
+    - Immutable locals (values!)
+    - Immutable collections (values!)
+    - Together encourage pure functions
+    - Example progression: numbers, strings, dates, any "compound object"
+  - Where you must have mutability, make sure it's controlled: reference types
+25:19
+- Reference types in general
+  - Identity
+  - Course-grained mutability
+  - Each type of reference has its own rules for how it takes on successive
+    values over time.
+30:00
+- Atoms
+  - Simplest, limited usefulness
+  - Atomic transition from one state to the next via pure function
+(inc 5) ;=> 6
+(def z (atom 5))
+@z ;=> 5
+(swap! z inc) ;=> 6
+@z ;=> 6
+  - chart
+39:40
+
+- Agents
+  - Also atomic transition via pure function
+  - functions (called actions) queue instead of retrying
+(def y (agent 5))
+@y ;=> 5
+y ;=> #<Agent@31554233: 5>
+(send y inc) ;=> #<Agent@31554233: 6>
+@y ;=> 6
+  - chart
+  - send vs. send-off
+47:00
+
+- Vars
+  - Allow changes that are visible only within one thread
+  - least like the others, no example
+  - root value visible to all
+  - with thread-local bindings acts like a variable
+  - also used as namespaced globals
+  - chart
+50:00
+
+- Refs
+(def x (ref 5))
+@x ;=> 5
+(dosync (alter x inc)) ;=> 6
+@x ;=> 6
+  - This is the STM.  Note how much we've talked about Clojure concurrency
+    without mentioning the STM.
+
+  - MVCC  MultiVersion concurrency control
+  - Course grained (use immutable values first, then STM)
+  - Changes must occur within a transaction
+    - Within a transaction, it's as if the world of refs has stopped changing
+    - Can read, write, alter as needed
+    - Whole transaction may retry
+    - Nested transactions merge into the outer one
+    - Transactions touching non-overlapping groups of refs don't impede each
+      other.
+  - Flying reads allowed
+  - chart
+57:00
+
+- Conclusion:
+  - Clojure has several benefits, one of them is a cohesive treatment of
+    concurrency
+    - Access to Java libs
+    - Lisp
+    - Persistent collections
+    - Seq library
+    - Functional programming
+    - Concurrency support
+  - The foundation: value vs. identity.
+  - values are immutable
+  - identities are modeled by references
+    - atoms for lone synchronous objects
+    - agents for asynchronous
+    - vars for thread-local
+    - refs for synchronously coordinating multiple objects
+- websites:
+  clojure.org
+  joyofclojure.com
+61
+
+All of these allow fast reads without coordination
+
+                Atom  Agent  Var  Ref
+Asynchronous     -      X     -    -
+Thread-local     -      -     X    -
+Coordinated      -      -     -    X
+May retry        X      -     -    X
+
+
+
