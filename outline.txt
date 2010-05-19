@@ -1,28 +1,32 @@
 - Introduce myself
-  - list reasons it may be worth learning clojure
   - briefly describe concurrency and why it's hard
-  - describe clojure's solution to concurrency
-    - immutability (how does this even work?)
-    - value/identity split
-    - reference types
-2:20
-- Reasons for learning Clojure [Learning a language is hard]
-    - Access to Java libs
-    - Lisp
+- Learning a language is hard for most of us
+  - Reasons Clojure may be worth it:
+    - metaprogramming
       - macros
-      - access to compiler at runtime
-      - gorgeous prefix notation
-    - Persistent collections
-    - Seq library
-    - Functional programming
-    - Concurrency support
-11:45
+      - multimethods
+      - runtime access to compiler
+    - functional programming
+      - high-order functions
+      - lazy sequences
+      - seq library
+    - support for immutables
+      - eliminates certain common complexities
+      - easier to reason about, like algebra
+    - leverages the JVM
+      - libraries for everything
+        - XML, HTTP, SQL, NoSQL, RDF, Midi, image processing, GUI, etc.
+      - deployment scenarios
+        - distributed computing
+        - Google App Engine
+      - development environments
+        - IDEs, debuggers, profilers, memory usage analysis, etc.
+    - concurrency
 - What is concurrency?
   - loosely coordinated threads in the same process
   - not parallelism (pmap, fork/join lib)
   - not distributed (cloud/beuwulf cluster)
   - multicore
-14:40
 - What's tricky about concurrency?
   - looks simple, but isn't
         a=31
@@ -31,20 +35,20 @@
   - race conditions
   - deadlocks
   - unenforced policy
-20:00
 - Clojure's solution
-  - As much immutability as possible
-    - Immutable locals (values!)
-    - Immutable collections (values!)
+  - Split value from identity
+  - As much immutable values as possible
+    - Immutable locals
+    - Immutable collections
     - Together encourage pure functions
     - Example progression: numbers, strings, dates, any "compound object"
   - Where you must have mutability, make sure it's controlled: reference types
-25:19
 - Reference types in general
   - Identity
   - Course-grained mutability
   - Each type of reference has its own rules for how it takes on successive
     values over time.
+
 30:00
 - Atoms
   - Simplest, limited usefulness
@@ -99,6 +103,13 @@ y ;=> #<Agent@31554233: 5>
   - chart
 57:00
 
+- Example
+  - Intro 4:00
+  - Pure functions 9:29
+  - Courtyard 12:48
+  - one-step 21:18
+  - single agents 29:00
+
 - Conclusion:
   - Clojure has several benefits, one of them is a cohesive treatment of
     concurrency
@@ -118,7 +129,6 @@ y ;=> #<Agent@31554233: 5>
 - websites:
   clojure.org
   joyofclojure.com
-61
 
 All of these allow fast reads without coordination
 
