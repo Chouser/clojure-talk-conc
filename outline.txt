@@ -49,7 +49,6 @@
   - Each type of reference has its own rules for how it takes on successive
     values over time.
 
-30:00
 - Atoms
   - Simplest, limited usefulness
   - Atomic transition from one state to the next via pure function
@@ -59,7 +58,6 @@
 (swap! z inc) ;=> 6
 @z ;=> 6
   - chart
-39:40
 
 - Agents
   - Also atomic transition via pure function
@@ -71,7 +69,6 @@ y ;=> #<Agent@31554233: 5>
 @y ;=> 6
   - chart
   - send vs. send-off
-47:00
 
 - Vars
   - Allow changes that are visible only within one thread
@@ -80,7 +77,6 @@ y ;=> #<Agent@31554233: 5>
   - with thread-local bindings acts like a variable
   - also used as namespaced globals
   - chart
-50:00
 
 - Refs
 (def x (ref 5))
@@ -101,7 +97,6 @@ y ;=> #<Agent@31554233: 5>
       other.
   - Flying reads allowed
   - chart
-57:00
 
 - Example
   - Intro 4:00
